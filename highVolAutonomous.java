@@ -1,46 +1,42 @@
-
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+
 
 @Autonomous(name="highVolAutonomous", group="Iterative Opmode")
 public class highVolAutonomous extends OpMode {
     DcMotor MotorL;
     DcMotor MotorR;
     DcMotor wench;
-    ColorSensor colSens;
-    servo hook;
+    Servo hook;
+    // ColorSensor colSens;
 
 
-
-     // Code to run ONCE when the driver hits INIT
+    // Code to run ONCE when the driver hits INIT
 
     public void init() {
         //init hardwear
         MotorL = hardwareMap.dcMotor.get("mL");
         MotorR = hardwareMap.dcMotor.get("mR");
         wench = hardwareMap.dcMotor.get("wench");
-        colSens = hardwareMap.colorSensor.get("colSens");
-        hook =  harfwearMap.srvo.set(servo.class, "hookServo");
+        hook = hardwareMap.servo.get("hookServo");
+        // colSens = hardwareMap.colorSensor.get("colSens");
 
-        //enable light on
-        colSens.enableLed(true);
 
-        //set encoders for yor motors
+
         //MotorL
         MotorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
+        MotorL.setDirection(DcMotor.Direction.FORWARD);
         //MotorR
         MotorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
+        MotorR.setDirection(DcMotor.Direction.REVERSE);
         //Wench
         wench.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wench.setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-
 
 
         //init telemitry
@@ -53,35 +49,56 @@ public class highVolAutonomous extends OpMode {
 
     }
 
-    public void start(){
-        //pulse positions
-        int wenchRaiseOne = 2085;
-
+    public void start() {
 
 
     }
 
-
-
-
-
-
-    }
 
     public void loop() {
-    //is the bot lowered
-        if (wenchRaiseOne >= 2080){
+        int wenchRaiseOne = 1600;
+        boolean isLowered;
+        int move1 = 10000;
+
+
+        //set servo pos
+        hook.setPosition(0);
+
+
+        //is the bot lowered
+        if (wenchRaiseOne <= (wench.getCurrentPosition())-10) {
             isLowered = true;
-        }else{
+        } else {
             isLowered = false;
         }
 
-        if(isLowered == false){
+        //raises wench
+
+        if (isLowered == false) {
             wench.setTargetPosition(wenchRaiseOne);
             wench.setPower(-1);
             wench.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            wench.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }else{
+            hook.setPosition(.5);
         }
+
+       //move
+        if (isLowered == true) {
+            MotorL.setTargetPosition(move1);
+            MotorL.setPower(0.5);
+            MotorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            MotorR.setTargetPosition(move1);
+            MotorR.setPower(0.5);
+            MotorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+
+        //pulse positions
+        telemetry.addData("encoder ", wench.getCurrentPosition());
+        telemetry.addData("time",getRuntime());
+    }
 }
+
 
 
