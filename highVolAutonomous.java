@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
@@ -57,20 +56,21 @@ public class highVolAutonomous extends OpMode {
 
     public void loop() {
         int wenchRaiseOne = 1600;
-        boolean isLowered;
+        boolean isLowered = true;
         int move1 = 10000;
 
 
+
         //set servo pos
-        hook.setPosition(0);
+       // hook.setPosition(0);
 
 
         //is the bot lowered
-        if (wenchRaiseOne <= (wench.getCurrentPosition())-10) {
-            isLowered = true;
-        } else {
-            isLowered = false;
-        }
+    //   if (wenchRaiseOne <= (wench.getCurrentPosition())-10) {
+    //       isLowered = true;
+    //   } else {
+    //        isLowered = false;
+    //   }
 
         //raises wench
 
@@ -79,11 +79,13 @@ public class highVolAutonomous extends OpMode {
             wench.setPower(-1);
             wench.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }else{
-            hook.setPosition(.5);
+            hook.setPosition(.55);
+            resetStartTime();
+
         }
 
        //move
-        if (isLowered == true) {
+        if (isLowered == true && getRuntime() >= 5.00) {
             MotorL.setTargetPosition(move1);
             MotorL.setPower(0.5);
             MotorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -97,8 +99,12 @@ public class highVolAutonomous extends OpMode {
         //pulse positions
         telemetry.addData("encoder ", wench.getCurrentPosition());
         telemetry.addData("time",getRuntime());
+        //its 3am and im coding let me have some fun
+        telemetry.addData("BIGATHIN","CHUNGUS");
     }
 }
+
+
 
 
 
