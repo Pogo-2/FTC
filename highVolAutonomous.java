@@ -15,7 +15,9 @@ public class highVolAutonomous extends OpMode {
     Servo hook;
     // ColorSensor colSens;
 
-
+    //time vars 
+    boolean sec7;
+    
     // Code to run ONCE when the driver hits INIT
 
     public void init() {
@@ -80,12 +82,16 @@ public class highVolAutonomous extends OpMode {
             wench.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }else{
             hook.setPosition(.55);
-            resetStartTime();
-
+        }
+        //7sec timmer
+        if(getRuntime <= 7.0){
+        sec7 = fasle;
+        }else{
+        sec7 = true; 
         }
 
        //move
-        if (isLowered == true && getRuntime() >= 5.00) {
+        if (isLowered == true && getRuntime() >= 15.00) {
             MotorL.setTargetPosition(move1);
             MotorL.setPower(0.5);
             MotorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
