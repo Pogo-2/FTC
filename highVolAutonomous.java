@@ -13,7 +13,7 @@ public class highVolAutonomous extends OpMode {
     DcMotor MotorR;
     DcMotor wench;
     Servo hook;
-    // ColorSensor colSens;
+     ColorSensor colSens;
 
     //time vars 
     boolean sec7;
@@ -26,7 +26,7 @@ public class highVolAutonomous extends OpMode {
         MotorR = hardwareMap.dcMotor.get("mR");
         wench = hardwareMap.dcMotor.get("wench");
         hook = hardwareMap.servo.get("hookServo");
-        // colSens = hardwareMap.colorSensor.get("colSens");
+        colSens = hardwareMap.colorSensor.get("colSens");
 
 
 
@@ -46,7 +46,9 @@ public class highVolAutonomous extends OpMode {
     }
 
     public void init_loop() {
-
+    telemetry.addData("Red",colSens.red() );
+        telemetry.addData("Green",colSens.green() );
+        telemetry.addData("Blue", colSens.blue() );
 
     }
 
@@ -91,7 +93,7 @@ public class highVolAutonomous extends OpMode {
         }
 
        //move
-        if (isLowered == true && getRuntime() >= 15.00) {
+        if (isLowered == true && sec7 >= 15.00) {
             MotorL.setTargetPosition(move1);
             MotorL.setPower(0.5);
             MotorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
